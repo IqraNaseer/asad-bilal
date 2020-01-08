@@ -35,9 +35,10 @@
                                     <div class="portlet-title">
                                         <div class="caption">
                                             <i class="fa fa-edit"></i>Test Sections</div>
-                                        <div class="tools">
-                                            <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                                            <div class="tools">
+                                                <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
                                             <a href="javascript:;" class="reload" data-original-title="" title=""></a>
+                                            Time: <span id="timer" style="float: right;"></span></p>
                                         </div>
                                     </div>
                                     <div class="portlet-body">
@@ -48,7 +49,7 @@
                                                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2_1" aria-expanded="true"> English </a>
                                                     </h4>
                                                 </div>
-                                                <div id="collapse_2_1" class="panel-collapse collapse in" aria-expanded="true" style="">
+                                                <div id="collapse_2_1" class="panel-collapse collapse in" aria-expanded="true">
                                                     <div class="panel-body">
                                                         <div id="group">
                                                             <div id="" class="current question">
@@ -76,7 +77,7 @@
                                                                         </label>
                                                                     </div>
                                                                 </div>
-                                                                <a class="npBtn" href="" style="float:right;"> Submit </a>
+                                                                <a class="npBtn" href="" style="float:right;" onclick="savetimmer()"> Submit </a>
                                                             </div>
                                                             <div id="" class="question">
                                                                 <div class="mt-element-ribbon bg-grey-steel">
@@ -103,7 +104,7 @@
                                                                         </label>
                                                                     </div>
                                                                 </div>
-                                                                <a class="npBtn" href="" style="float:right;"> Submit </a>
+                                                                <a class="npBtn" href="" style="float:right;" onclick="savetimmer()"> Submit </a>
                                                             </div>
                                                             <div id="" class="question">
                                                                 <div class="mt-element-ribbon bg-grey-steel">
@@ -130,10 +131,10 @@
                                                                         </label>
                                                                     </div>
                                                                 </div>
-                                                                <a class="npBtn" href="" style="float:right;"> Submit </a>
+                                                                <a class="npBtn" style="float:right;" onclick="savetimmer()"> Submit </a>
                                                             </div>
                                                         </div>
-                                                        <button id="next" class="npBtn">Next</button>
+                                                        <button id="next" class="npBtn" onclick="answertime()">Next</button>
                                                         <button style="display:none" id="prev" class="npBtn">Prev</button>
                                                     </div>
                                                 </div>
@@ -171,7 +172,7 @@
                                                                         </label>
                                                                     </div>
                                                                 </div>
-                                                                <a class="npBtn" href="" style="float:right;"> Submit </a>
+                                                                <a class="npBtn" href="" style="float:right;" onclick="savetimmer()"> Submit </a>
                                                             </div>
                                                             <div id="" class="question">
                                                                 <div class="mt-element-ribbon bg-grey-steel">
@@ -197,7 +198,7 @@
                                                                         </label>
                                                                     </div>
                                                                 </div>
-                                                                <a class="npBtn" href="" style="float:right;"> Submit </a>
+                                                                <a class="npBtn" href="" style="float:right;" onclick="savetimmer()"> Submit </a>
                                                             </div>
                                                             <div id="" class="question">
                                                                 <div class="mt-element-ribbon bg-grey-steel">
@@ -223,10 +224,10 @@
                                                                         </label>
                                                                     </div>
                                                                 </div>
-                                                                <a class="npBtn" href="" style="float:right;"> Submit </a>
+                                                                <a class="npBtn" href="" style="float:right;" onclick="savetimmer()"> Submit </a>
                                                             </div>
                                                         </div>
-                                                        <button id="nexxt" class="npBtn">Next</button>
+                                                        <button id="nexxt" class="npBtn" onclick="answertime()">Next</button>
                                                         <button style="display:none" id="preev" class="npBtn">Prev</button>
                                                     </div>
                                                 </div>
@@ -264,7 +265,7 @@
                                                                         </label>
                                                                     </div>
                                                                 </div>
-                                                                <a class="npBtn" href="" style="float:right;"> Submit </a>
+                                                                <a class="npBtn" href="" style="float:right;" onclick="savetimmer()"> Submit </a>
                                                             </div>
                                                             <div id="" class="question">
                                                                 <div class="mt-element-ribbon bg-grey-steel">
@@ -290,7 +291,7 @@
                                                                         </label>
                                                                     </div>
                                                                 </div>
-                                                                <a class="npBtn" href="" style="float:right;"> Submit </a>
+                                                                <a class="npBtn" href="" style="float:right;" onclick="start"> Submit </a>
                                                             </div>
                                                             <div id="" class="question">
                                                                 <div class="mt-element-ribbon bg-grey-steel">
@@ -319,7 +320,7 @@
                                                                 <a class="npBtn" href="" style="float:right;"> Submit </a>
                                                             </div>
                                                         </div>
-                                                        <button id="nex" class="npBtn">Next</button>
+                                                        <button id="nex" class="npBtn" onclick="answertime()">Next</button>
                                                         <button style="display:none" id="pre" class="npBtn">Prev</button>
                                                     </div>
                                                 </div>
@@ -333,5 +334,80 @@
                     </div>
                     <!-- END SIDEBAR CONTENT LAYOUT -->
                 </div>
-{% endblock %}
 
+{% endblock %}
+{% block js %}
+<script>
+  
+  var currentTime = 0;
+    var startTime =0;
+    var timmerleft;
+    var savet,quet=0;
+    var quettime=60;
+    
+
+
+function convertSecond(s){
+    var min = floor(s/60);
+    var sec = s % 60;
+    savet = nf(sec,2);
+    return nf(min,2) + ':' + nf(sec,2);
+}
+function setup(){
+    noCanvas();
+    currentTime = 0;
+    var time = select('#timer');
+    timmerleft = 3600;
+    time.html(convertSecond(timmerleft - currentTime));
+    var interval = setInterval(timeIt,1000);
+    var newt = setInterval(setup1,1000);
+
+    function timeIt()
+    {
+            currentTime = floor((millis() - startTime)/1000);
+        
+            time.html(convertSecond(timmerleft - currentTime))
+           
+            if(currentTime == timmerleft){
+                clearInterval(interval);
+            }
+    }
+}
+
+function setup1(){
+    currentTime2 = 0;
+    quettime = 60;
+    startTime1=0;
+    var interval = setInterval(timeIt1,1000)
+    
+    function timeIt1(){
+       // counter++;
+       currentTime2 = floor((millis() - startTime)/1000);
+        //console.log("1t"+convertSecond(quettime - currentTime2))
+        //startTime++;
+        if(currentTime2 == quettime){
+            clearInterval(interval);
+        }
+    }
+}
+
+function answertime(){
+    ans = convertSecond(currentTime2);
+    console.log(ans);
+    localStorage.setItem('taken' , ans);
+    quettime=60
+}
+
+function savetimmer(){
+    localStorage.setItem('timetaken',convertSecond(currentTime))
+    console.log("submit time:" + convertSecond(currentTime))
+    display(convertSecond(currentTime))
+}
+
+function display(tim){
+    alert("you solve this in "+tim)
+}
+
+</script>
+
+{% endblock %}
